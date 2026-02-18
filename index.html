@@ -187,7 +187,133 @@
     <button onclick="mostrarMensaje()">Descubrir Dato Curioso</button>
     <p id="dato" style="margin-top:15px; font-weight:bold;"></p>
 </section>
+    <section id="gameplay">
+        <h2>Gameplay</h2>
+        body {
+        margin: 0;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to bottom, #ffcccc, #ff6666);
+        text-align: center;
+    }
 
+    h1 {
+        margin-top: 10px;
+        color: #800000;
+    }
+
+    #score, #timer {
+        font-size: 20px;
+        margin: 5px;
+        font-weight: bold;
+    }
+
+    #gameArea {
+        position: relative;
+        width: 100vw;
+        height: 80vh;
+    }
+
+    #granada {
+        position: absolute;
+        font-size: 50px;
+        cursor: pointer;
+        transition: transform 0.1s;
+    }
+
+    #granada:active {
+        transform: scale(1.2);
+    }
+
+    #gameOver {
+        display: none;
+        font-size: 30px;
+        color: white;
+        margin-top: 20px;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #800000;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #a00000;
+    }
+</style>
+</head>
+<body>
+
+<h1>🍎 Atrapa la Granada 🍎</h1>
+<div id="score">Puntos: 0</div>
+<div id="timer">Tiempo: 30</div>
+<div id="gameArea">
+    <div id="granada">🍎</div>
+</div>
+
+<div id="gameOver"></div>
+<button onclick="startGame()">Reiniciar Juego</button>
+
+<script>
+let score = 0;
+let timeLeft = 30;
+let gameInterval;
+let timerInterval;
+
+const granada = document.getElementById("granada");
+const scoreDisplay = document.getElementById("score");
+const timerDisplay = document.getElementById("timer");
+const gameOverText = document.getElementById("gameOver");
+
+function moveGranada() {
+    const x = Math.random() * (window.innerWidth - 50);
+    const y = Math.random() * (window.innerHeight - 150);
+    granada.style.left = x + "px";
+    granada.style.top = y + "px";
+}
+
+granada.addEventListener("click", () => {
+    score++;
+    scoreDisplay.textContent = "Puntos: " + score;
+    moveGranada();
+});
+
+function startGame() {
+    score = 0;
+    timeLeft = 30;
+    scoreDisplay.textContent = "Puntos: 0";
+    timerDisplay.textContent = "Tiempo: 30";
+    gameOverText.style.display = "none";
+    granada.style.display = "block";
+
+    clearInterval(gameInterval);
+    clearInterval(timerInterval);
+
+    gameInterval = setInterval(moveGranada, 1000);
+
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        timerDisplay.textContent = "Tiempo: " + timeLeft;
+
+        if (timeLeft <= 0) {
+            clearInterval(gameInterval);
+            clearInterval(timerInterval);
+            granada.style.display = "none";
+            gameOverText.style.display = "block";
+            gameOverText.textContent = "¡Fin del juego! 🍎 Puntuación final: " + score;
+        }
+    }, 1000);
+}
+
+startGame();
+</script>
+
+        
 <section id="galeria">
     <h2>Galería</h2>
     <div class="gallery">
@@ -217,4 +343,5 @@
 
 </body>
 </html>
+
 
